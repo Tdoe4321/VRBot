@@ -1,8 +1,8 @@
 /* 
 *  For: VRBot Personal Project
-*  Version: 0.2
+*  Version: 0.3
 *  By: Tyler Gragg
-*  Date: 2/01/2019
+*  Start Date: 2/01/2019
 */
 #include <string.h>
 #include <AFMotor.h>
@@ -24,7 +24,7 @@ boolean newData = false;
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   FL.setSpeed(200);
   FR.setSpeed(200);
@@ -36,7 +36,6 @@ void setup() {
   BL.run(RELEASE);
   BR.run(RELEASE);
 
-  //pinMode(13, OUTPUT);
 }
 
 // Turn right motor forword
@@ -70,21 +69,40 @@ void stopAll(){
   BR.run(RELEASE);
 }
 
-void serialInput(){
-    recvWithEndMarker();
-    showNewData();
+void loadSerialInput(){
+    //recvWithEndMarker();
+    //showNewData();
     String receivedString(receivedChars);
+
+    leftData = getValue(receivedString, ':', 0).toInt();
+    rightData = getValue(receivedString, ':', 1).toInt();
     
-    if(receivedString.charAt(0) == 'L'){
-      //leftData = receivedString.substring(1).toFloat();
-      //leftData = strtok_r(receivedString,'L');
-      leftData = -255;
+//    if(receivedString.charAt(0) == 'L'){
+//      leftData = receivedString.substring(1).toInt();
+//      //leftData = strtok_r(receivedString,'L');
+//      //leftData = 255;
+//    }
+//    else if(receivedString.charAt(0) == 'R'){
+//      rightData = receivedString.substring(1).toInt();
+//      //rightData = strtok_r(receivedString,'R');
+//      //rightData = -255;
+//    }
+}
+
+String getValue(String data, char separator, int index)
+{
+    int found = 0;
+    int strIndex[] = { 0, -1 };
+    int maxIndex = data.length() - 1;
+
+    for (int i = 0; i <= maxIndex && found <= index; i++) {
+        if (data.charAt(i) == separator || i == maxIndex) {
+            found++;
+            strIndex[0] = strIndex[1] + 1;
+            strIndex[1] = (i == maxIndex) ? i+1 : i;
+        }
     }
-    else if(receivedString.charAt(0) == 'R'){
-      //rightData = receivedString.substring(1).toFloat();
-      //rightData = strtok_r(receivedString,'R');
-      rightData = 0;
-    }
+    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
 void recvWithEndMarker() {
@@ -110,7 +128,34 @@ void recvWithEndMarker() {
     }
 }
 
-void setDirection(){
+void serialEvent(){
+    static byte ndx = 0;
+    char endMarker = '>';
+    char rc;
+    
+    while (Serial.available() > 0 && newData == false) {
+        rc = Serial.read();
+
+        if (rc != endMarker) {
+            receivedChars[ndx] = rc;
+            ndx++;
+            if (ndx >= numChars) {
+                ndx = numChars - 1;
+            }
+        }
+        else {
+            receivedChars[ndx] = '\0'; // terminate the string
+            ndx = 0;
+            newData = true;
+        }
+    }
+
+    if (newData == true) {
+        newData = false;
+    }
+}
+
+void setLeftDirection(){
   if(leftData > 0){
     leftF();
   }
@@ -118,6 +163,9 @@ void setDirection(){
     leftB();
     leftData = leftData * -1;
   }
+}
+
+void setRightDirection(){
   if(rightData > 0){
     rightF();
   }
@@ -125,7 +173,6 @@ void setDirection(){
     rightB();
     rightData = rightData * -1;
   }
-  
 }
 
 void showNewData() {
@@ -135,10 +182,11 @@ void showNewData() {
 }
 
 void loop() {
-  serialInput();
+  loadSerialInput();
     
-  setDirection();
-
+  setRightDirection();
+  setLeftDirection();
+  
   motorEnabled = 1;
 
   if (motorEnabled != 1) {
