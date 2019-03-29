@@ -6,7 +6,7 @@ import numpy as np
 context = zmq.Context()
 footage_socket = context.socket(zmq.SUB)
 footage_socket.setsockopt(zmq.CONFLATE, 1)
-footage_socket.bind('tcp://*:5555')
+footage_socket.connect('tcp://127.0.0.1:5555')
 footage_socket.setsockopt_string(zmq.SUBSCRIBE, np.unicode(''))
 
 def rescale_frame(frame, percent=75):
@@ -21,7 +21,7 @@ while True:
         img = base64.b64decode(frame)
         npimg = np.fromstring(img, dtype=np.uint8)
         source = cv2.imdecode(npimg, 1)
-        #source = rescale_frame(source, percent=100)
+        source = rescale_frame(source, 200)
         cv2.imshow("Stream", source)
         cv2.waitKey(1)
 
