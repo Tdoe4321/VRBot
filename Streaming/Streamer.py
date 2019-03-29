@@ -21,6 +21,7 @@ def rescale_frame(frame, percent=75):
 while True:
     try:
         grabbed, frame = camera.read()  # grab the current frame
+        frame = rescale_frame(frame, 50)
         encoded, buffer = cv2.imencode('.jpg', frame)
         jpg_as_text = base64.b64encode(buffer)
         footage_socket.send(jpg_as_text)
