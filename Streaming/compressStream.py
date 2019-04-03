@@ -1,6 +1,7 @@
 import base64
 import cv2
 import zmq
+import zlib
 
 context = zmq.Context()
 footage_socket = context.socket(zmq.PUB)
@@ -22,8 +23,8 @@ while True:
     try:
         grabbed, frame = camera.read()  # grab the current frame
         #frame = rescale_frame(frame, 1000)
-	encoded, buffer = cv2.imencode('.jpg', frame)
-        jpg_as_text = base64.b64encode(buffer)
+        encoded, buffer = cv2.imencode('.jpg', frame)
+        jpg_as_text = base64.b64encode(zlib.compress(buffer, 6))
         footage_socket.send(jpg_as_text)
 
     except KeyboardInterrupt:
