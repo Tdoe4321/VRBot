@@ -3,7 +3,7 @@ import cv2
 import zmq
 
 context = zmq.Context()
-footage_socket = context.socket(zmq.PUB)
+footage_socket = context.socket(zmq.DEALER)
 footage_socket.setsockopt(zmq.CONFLATE, 1)
 #footage_socket.connect('tcp://192.168.1.141:5555')
 footage_socket.bind('tcp://*:55555')
@@ -11,6 +11,8 @@ camera = cv2.VideoCapture(0)  # init the camera
 
 #camera.set(3, 640)
 #camera.set(4, 480)
+
+msg = None
 
 def rescale_frame(frame, percent=75):
     width = int(frame.shape[1] * percent/ 100)
@@ -25,6 +27,11 @@ while True:
         encoded, buffer = cv2.imencode('.jpg', frame)
         jpg_as_text = base64.b64encode(buffer)
         footage_socket.send(jpg_as_text)
+        msg = footage_socket.recv().decode("utf-8")
+        if(not msg):
+            print("Garbage")
+        else:
+            print(msg)
 
     except KeyboardInterrupt:
         camera.release()
