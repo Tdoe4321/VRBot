@@ -22,7 +22,7 @@ while True:
     try:
         grabbed, frame = camera.read()  # grab the current frame
         #frame = rescale_frame(frame, 1000)
-	encoded, buffer = cv2.imencode('.jpg', frame)
+        encoded, buffer = cv2.imencode('.jpg', frame)
         jpg_as_text = base64.b64encode(buffer)
         footage_socket.send(jpg_as_text)
 
