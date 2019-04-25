@@ -16,11 +16,14 @@ int motorEnabled = 0;     // values for turning on system
 
 int leftData = 0;
 int rightData = 0;
+int hornData = 1;
 
 const byte numChars = 32;
 char receivedChars[numChars];   // an array to store the received data
 
 boolean newData = false;
+
+int hornPin = A0;
 
 
 void setup() {
@@ -35,6 +38,8 @@ void setup() {
   FR.run(RELEASE);
   BL.run(RELEASE);
   BR.run(RELEASE);
+
+  pinMode(hornPin, OUTPUT);
 
 }
 
@@ -76,6 +81,7 @@ void loadSerialInput(){
 
     leftData = getValue(receivedString, ':', 0).toInt();
     rightData = getValue(receivedString, ':', 1).toInt();
+    hornData = getValue(receivedString, ':', 2).toInt();
     
 //    if(receivedString.charAt(0) == 'L'){
 //      leftData = receivedString.substring(1).toInt();
@@ -199,7 +205,9 @@ void loop() {
     FL.setSpeed(leftData);
     BR.setSpeed(rightData);
     BL.setSpeed(leftData);
+
+    if(hornData == 1) digitalWrite(hornPin, HIGH);
+    else digitalWrite(hornPin, LOW);
     
   }
 }
-

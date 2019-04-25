@@ -9,7 +9,7 @@ public class UniversalSerialSend : MonoBehaviour {
     public GameObject rightJoy;
 
     private bool sendingData = true;
-    static public SerialPort serial = new SerialPort("COM5", 115200);
+    static public SerialPort serial = new SerialPort("COM12", 115200);
 
 
     void Start() {
