@@ -10,6 +10,7 @@ public class PairSocket : MonoBehaviour {
 
     public GameObject leftJoy;
     public GameObject rightJoy;
+    public GameObject hornButton;
 
     string final;
 
@@ -65,7 +66,7 @@ public class PairSocket : MonoBehaviour {
         if (sendingData == true) {
             string leftJoyString = leftJoy.GetComponent<CalcDistJoy>().scaledDist.ToString();
             string rightJoyString = rightJoy.GetComponent<CalcDistJoy>().scaledDist.ToString();
-            string hornString = "0";
+            string hornString = hornButton.GetComponent<HornButton>().hornPressed.ToString();
 
             final = leftJoyString + ":" + rightJoyString + ":" + hornString + ">";
 
