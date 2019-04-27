@@ -16,7 +16,8 @@ int motorEnabled = 0;     // values for turning on system
 
 int leftData = 0;
 int rightData = 0;
-int hornData = 1;
+int hornData = 0;
+int lightData = 0;
 
 const byte numChars = 32;
 char receivedChars[numChars];   // an array to store the received data
@@ -24,6 +25,7 @@ char receivedChars[numChars];   // an array to store the received data
 boolean newData = false;
 
 int hornPin = A0;
+int lightPin = A1;
 
 
 void setup() {
@@ -40,6 +42,7 @@ void setup() {
   BR.run(RELEASE);
 
   pinMode(hornPin, OUTPUT);
+  pinMode(lightPin, OUTPUT);
 
 }
 
@@ -75,24 +78,12 @@ void stopAll(){
 }
 
 void loadSerialInput(){
-    //recvWithEndMarker();
-    //showNewData();
     String receivedString(receivedChars);
 
     leftData = getValue(receivedString, ':', 0).toInt();
     rightData = getValue(receivedString, ':', 1).toInt();
     hornData = getValue(receivedString, ':', 2).toInt();
-    
-//    if(receivedString.charAt(0) == 'L'){
-//      leftData = receivedString.substring(1).toInt();
-//      //leftData = strtok_r(receivedString,'L');
-//      //leftData = 255;
-//    }
-//    else if(receivedString.charAt(0) == 'R'){
-//      rightData = receivedString.substring(1).toInt();
-//      //rightData = strtok_r(receivedString,'R');
-//      //rightData = -255;
-//    }
+    lightData = getValue(receivedString, ':', 3).toInt();
 }
 
 String getValue(String data, char separator, int index)
@@ -208,6 +199,8 @@ void loop() {
 
     if(hornData == 1) digitalWrite(hornPin, HIGH);
     else digitalWrite(hornPin, LOW);
+    if(lightData == 1) digitalWrite(lightPin, HIGH);
+    else digitalWrite(lightPin, LOW);
     
   }
 }
