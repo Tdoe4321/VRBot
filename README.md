@@ -12,5 +12,5 @@ pip install pyzmq
 ```
 udevadm info -a -n /dev/ttyUSB1 | grep '{serial}' | head -n1
 vim /etc/udev/rules.d/99-usb-serial.rules
-"SUBSYSTEM=="tty", ATTRS{serial}=="VALUE_FROM_ABOVE", SYMLINK+="arduino_0"
+SUBSYSTEM=="tty", ATTRS{serial}=="VALUE_FROM_ABOVE", SYMLINK+="arduino_0"
 ```
