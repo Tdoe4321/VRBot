@@ -46,7 +46,8 @@ public class PairSocket : MonoBehaviour {
 
         pairSocket = new NetMQ.Sockets.PairSocket();
         pairSocket.Options.ReceiveHighWatermark = 0;
-        pairSocket.Connect("tcp://192.168.1.122:55555");
+        //pairSocket.Connect("tcp://192.168.1.122:55555");
+        pairSocket.Connect("tcp://192.168.1.111:55555");
 
         is_connected = true;
 
