@@ -11,7 +11,7 @@ namespace Valve.VR.InteractionSystem {
         public Transform returnPos;
         //public GameObject objectToReset;
         LinearDrive linearDrive;
-        
+
         private void Awake() {
             // Get the real value of the linear drive 
             //linearDrive = objectToReset.GetComponent<LinearDrive>();
