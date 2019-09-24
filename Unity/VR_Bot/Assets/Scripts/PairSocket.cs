@@ -71,7 +71,7 @@ public class PairSocket : MonoBehaviour {
             string hornString = hornButton.GetComponent<HornButton>().hornPressed.ToString();
             string lightString = lightSwitch.GetComponent<LightSwitch>().lightOn.ToString();
 
-            final = leftJoyString + ":" + rightJoyString + ":" + hornString + ":" + lightString + ">";
+            final = leftJoyString + ":" + rightJoyString + ":" + hornString + ":" + lightString + ":5>";
 
             Debug.Log(final);
         }
@@ -85,9 +85,12 @@ public class PairSocket : MonoBehaviour {
     }
 
     void OnApplicationQuit() {
-
-        //pairSocket.TrySendFrame(new System.TimeSpan(0, 0, 1), "0:0>");
-        pairSocket.TrySendFrame(new System.TimeSpan(0, 0, 1), "0:0:0:0>");
+        //pairSocket.TrySendFrame(new System.TimeSpan(0, 0, 1), "0:0:0:0:0>");
+        final = "0:0:0:0:0>";
+        for (int i = 0; i < 5; i++) {
+            pairSocket.SendFrame(final);
+        }
+        Debug.Log(final);
 
         lock (thisLock_) stop_thread_ = true;
         client_thread_.Join();
