@@ -12,6 +12,7 @@ public class PairSocket : MonoBehaviour {
     public GameObject rightJoy;
     public GameObject hornButton;
     public GameObject lightSwitch;
+    public GameObject speedObject;
 
     string final;
 
@@ -70,8 +71,9 @@ public class PairSocket : MonoBehaviour {
             string rightJoyString = rightJoy.GetComponent<CalcDistJoy>().scaledDist.ToString();
             string hornString = hornButton.GetComponent<HornButton>().hornPressed.ToString();
             string lightString = lightSwitch.GetComponent<LightSwitch>().lightOn.ToString();
+            string speedString = speedObject.GetComponent<CruiseVariable>().CruiseVariableValue.ToString();
 
-            final = leftJoyString + ":" + rightJoyString + ":" + hornString + ":" + lightString + ":5>";
+            final = leftJoyString + ":" + rightJoyString + ":" + hornString + ":" + lightString + ":" + speedString + ">";
 
             Debug.Log(final);
         }
