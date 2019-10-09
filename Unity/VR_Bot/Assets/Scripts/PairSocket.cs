@@ -11,6 +11,8 @@ public class PairSocket : MonoBehaviour {
     public GameObject leftJoy;
     public GameObject rightJoy;
     public GameObject hornButton;
+    public GameObject lightSwitch;
+    public GameObject speedObject;
 
     string final;
 
@@ -46,7 +48,8 @@ public class PairSocket : MonoBehaviour {
 
         pairSocket = new NetMQ.Sockets.PairSocket();
         pairSocket.Options.ReceiveHighWatermark = 0;
-        pairSocket.Connect("tcp://192.168.1.122:55555");
+        //pairSocket.Connect("tcp://192.168.1.122:55555");
+        pairSocket.Connect("tcp://192.168.1.111:55555");
 
         is_connected = true;
 
@@ -67,8 +70,10 @@ public class PairSocket : MonoBehaviour {
             string leftJoyString = leftJoy.GetComponent<CalcDistJoy>().scaledDist.ToString();
             string rightJoyString = rightJoy.GetComponent<CalcDistJoy>().scaledDist.ToString();
             string hornString = hornButton.GetComponent<HornButton>().hornPressed.ToString();
+            string lightString = lightSwitch.GetComponent<LightSwitch>().lightOn.ToString();
+            string speedString = speedObject.GetComponent<CruiseVariable>().CruiseVariableValue.ToString();
 
-            final = leftJoyString + ":" + rightJoyString + ":" + hornString + ">";
+            final = leftJoyString + ":" + rightJoyString + ":" + hornString + ":" + lightString + ":" + speedString + ">";
 
             Debug.Log(final);
         }
@@ -82,9 +87,12 @@ public class PairSocket : MonoBehaviour {
     }
 
     void OnApplicationQuit() {
-
-        //pairSocket.TrySendFrame(new System.TimeSpan(0, 0, 1), "0:0>");
-        pairSocket.TrySendFrame(new System.TimeSpan(0, 0, 1), "0:0:0>");
+        //pairSocket.TrySendFrame(new System.TimeSpan(0, 0, 1), "0:0:0:0:0>");
+        final = "0:0:0:0:0>";
+        for (int i = 0; i < 5; i++) {
+            pairSocket.SendFrame(final);
+        }
+        Debug.Log(final);
 
         lock (thisLock_) stop_thread_ = true;
         client_thread_.Join();

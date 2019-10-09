@@ -1,5 +1,5 @@
 
-#define mag_pin A0
+#define mag_pin A2
 
 const int numReadings = 10;
 
