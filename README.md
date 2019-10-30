@@ -1,7 +1,7 @@
 # VRBot
 A VR Controlled Remote-Control Car Project
 
-For a link to the Instructables for a How-To on how to build this, [Click Here]()
+For a link to the Instructables for a How-To on how to build this, [Click Here]().  
 To take a closer look at some of the thought behind how I built this, [check out my website](https://tylergragg.com/vrbot-fall-2019/)
 
 ### Dependencies
