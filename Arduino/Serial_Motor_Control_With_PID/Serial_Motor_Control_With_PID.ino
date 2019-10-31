@@ -1,8 +1,8 @@
 /* 
 *  For: VRBot Personal Project
-*  Version: 0.3
+*  Version: 2.0
 *  By: Tyler Gragg
-*  Start Date: 2/01/2019
+*  Start Date: 10/01/2019
 */
 #include <string.h>
 #include <AFMotor.h>
