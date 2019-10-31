@@ -1,3 +1,0 @@
-### List of things to try next for this project:
-1. Make the current way of sending video match the Servers bind, Clients Connect
-2. Then, try to send data across the network again
